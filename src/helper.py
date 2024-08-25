@@ -1,8 +1,8 @@
 import os
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.llms import HuggingFacePipeline
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.llms import OpenAI
 from langchain.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-HUGG_API_KEY = os.getenv("HUGG_API_KEY")  
-os.environ['HUGG_API_KEY'] =  HUGG_API_KEY
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  
+os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 
 
 def get_pdf_text(pdf_docs):
@@ -32,14 +32,14 @@ def get_text_chunks(text):
 
 
 def get_vector_store(text_chunks):
-    embeddings = HuggingFaceEmbeddings()
+    embeddings = OpenAIEmbeddings()
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
     return vector_store
 
 
 
 def get_conversational_chain(vector_store):
-    llm=HuggingFacePipeline()
+    llm=OpenAI()
     memory = ConversationBufferMemory(memory_key = "chat_history", return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=vector_store.as_retriever(), memory=memory)
     return conversation_chain
