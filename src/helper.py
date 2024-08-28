@@ -8,10 +8,10 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from dotenv import load_dotenv
 
-
+# Load the environment variables, specifically the OpenAI API key
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  
-os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
+os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY # Ensure the API key is set in the environment variables
 
 
 def get_pdf_text(pdf_docs):
@@ -39,7 +39,7 @@ def get_vector_store(text_chunks):
 
 
 def get_conversational_chain(vector_store):
-    llm=OpenAI()
+    llm=OpenAI() # Initialize the OpenAI language model
     memory = ConversationBufferMemory(memory_key = "chat_history", return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=vector_store.as_retriever(), memory=memory)
     return conversation_chain
