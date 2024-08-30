@@ -18,7 +18,7 @@ def user_input(user_question):
 
 # Main function to set up the Streamlit app
 def main():
-    # Configure the Streamlit page
+    # Configure the Streamlit pages
     st.set_page_config(page_title="Information Retrieval")
     st.header("Information Retrieval System💁")
 
